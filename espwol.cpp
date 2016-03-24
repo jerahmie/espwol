@@ -4,18 +4,24 @@ extern "C" {
 #include "osapi.h"
 #include "gpio.h"
 #include "os_type.h"
-  void ICACHE_FLASH_ATTR user_init(void);
-  
+#include "user_interface.h"
+#include "driver/uart.h"
 }
-//#include <iostream>
-//int os_printf_plus(cost char *format, ...) __attribute__ ((format (printf, 1,2)));
+#include "user_config.h"
 
+void user_rf_pre_init(void){};
 
+void init(){
+  os_printf("After system_init_done.");
+}
 
 void ICACHE_FLASH_ATTR user_init()
 {
   // init gpio subsystem
-  gpio_init();
-  os_printf("In user_init\n.");
+  uart_init(BIT_RATE_115200, BIT_RATE_115200);
+  //gpio_init();
+
+  // Print a message after system init done.
+  system_init_done_cb(init);
 }
  
